@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ShopSphere - User Management</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+
+        body {
+            background: #f5f5f5;
+            margin: 0;
+        }
+
+        .admin-header {
+            background: #2874f0;
+            color: white;
+            padding: 18px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .admin-header h1 {
+            margin: 0;
+        }
+
+        .back-btn {
+            background: white;
+            color: #2874f0;
+            border: none;
+            padding: 9px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .admin-container {
+            max-width: 1100px;
+            margin: auto;
+            padding: 30px;
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .top-bar input {
+            padding: 12px;
+            width: 300px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .users-table {
+            width: 100%;
+            background: white;
+            border-collapse: collapse;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .users-table th,
+        .users-table td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+
+        .users-table th {
+            background: #2874f0;
+            color: white;
+        }
+
+        .user-number {
+            font-weight: bold;
+            color: #2874f0;
+        }
+
+        .empty-message {
+            text-align: center;
+            padding: 30px;
+            background: white;
+        }
+
+        @media (max-width: 800px) {
+
+            .top-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .top-bar input {
+                width: auto;
+            }
+
+            .users-table {
+                display: block;
+                overflow-x: auto;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header class="admin-header">
+
+    <h1>🛍️ ShopSphere Admin</h1>
+
+    <button
+        class="back-btn"
+        onclick="location.href='admin-dashboard.html'"
+    >
+        ← Dashboard
+    </button>
+
+</header>
+
+
+<main class="admin-container">
+
+
+    <div class="top-bar">
+
+        <h2>👥 User Management</h2>
+
+        <input
+            type="text"
+            id="searchUser"
+            placeholder="Search users..."
+        >
+
+    </div>
+
+
+    <table class="users-table">
+
+        <thead>
+
+            <tr>
+
+                <th>No.</th>
+
+                <th>Name</th>
+
+                <th>Email</th>
+
+                <th>Registered Date</th>
+
+            </tr>
+
+        </thead>
+
+
+        <tbody id="userTableBody"></tbody>
+
+    </table>
+
+
+</main>
+
+
+<script>
+
+
+/* ================= ADMIN LOGIN CHECK ================= */
+
+const adminToken =
+    localStorage.getItem("shopSphereAdminToken");
+
+
+if (!adminToken) {
+
+    window.location.href =
+        "admin-login.html";
+
+}
+
+
+/* ================= DATA ================= */
+
+let allUsers = [];
+
+
+/* ================= LOAD USERS ================= */
+
+async function loadUsers() {
+
+    try {
+
+        const response =
+            await fetch(
+                "http://localhost:5000/api/users/all"
+            );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Failed to load users"
+            );
+
+        }
+
+
+        allUsers =
+            await response.json();
+
+
+        displayUsers(allUsers);
+
+    }
+
+    catch (error) {
+
+        console.log(
+            "User loading error:",
+            error
+        );
+
+
+        document.getElementById(
+            "userTableBody"
+        ).innerHTML = `
+
+            <tr>
+
+                <td
+                    colspan="4"
+                    class="empty-message"
+                >
+                    Failed to load users ❌
+                </td>
+
+            </tr>
+
+        `;
+
+    }
+
+}
+
+
+/* ================= DISPLAY USERS ================= */
+
+function displayUsers(users) {
+
+    const tableBody =
+        document.getElementById(
+            "userTableBody"
+        );
+
+
+    tableBody.innerHTML = "";
+
+
+    if (users.length === 0) {
+
+        tableBody.innerHTML = `
+
+            <tr>
+
+                <td
+                    colspan="4"
+                    class="empty-message"
+                >
+                    No registered users found 👤
+                </td>
+
+            </tr>
+
+        `;
+
+        return;
+
+    }
+
+
+    users.forEach(function(user, index) {
+
+        const row =
+            document.createElement("tr");
+
+
+        const registeredDate =
+            user.createdAt
+                ? new Date(user.createdAt)
+                    .toLocaleDateString("en-IN")
+                : "-";
+
+
+        row.innerHTML = `
+
+            <td class="user-number">
+                ${index + 1}
+            </td>
+
+            <td>
+                ${user.name || "-"}
+            </td>
+
+            <td>
+                ${user.email || "-"}
+            </td>
+
+            <td>
+                ${registeredDate}
+            </td>
+
+        `;
+
+
+        tableBody.appendChild(row);
+
+    });
+
+}
+
+
+/* ================= SEARCH USERS ================= */
+
+document
+    .getElementById("searchUser")
+    .addEventListener(
+        "input",
+        function() {
+
+            const searchText =
+                this.value.toLowerCase();
+
+
+            const filteredUsers =
+                allUsers.filter(function(user) {
+
+                    return (
+
+                        (user.name || "")
+                            .toLowerCase()
+                            .includes(searchText)
+
+                        ||
+
+                        (user.email || "")
+                            .toLowerCase()
+                            .includes(searchText)
+
+                    );
+
+                });
+
+
+            displayUsers(
+                filteredUsers
+            );
+
+        }
+    );
+
+
+/* ================= START ================= */
+
+loadUsers();
+
+</script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,1183 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>My Orders | ShopSphere</title>
+
+<link rel="stylesheet" href="style.css">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<style>
+
+/* ================= CANCEL / RETURN MODAL ================= */
+
+.cancel-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.55);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.cancel-modal-box {
+    background: white;
+    width: 90%;
+    max-width: 450px;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+}
+
+.cancel-modal-box h2 {
+    margin-top: 0;
+    margin-bottom: 8px;
+}
+
+.cancel-modal-box p {
+    margin-bottom: 15px;
+    color: #555;
+}
+
+.cancel-reason {
+    display: block;
+    padding: 11px;
+    margin: 5px 0;
+    border: 1px solid #eee;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.cancel-reason:hover {
+    background: #f5f5f5;
+}
+
+.cancel-reason input {
+    margin-right: 10px;
+}
+
+.cancel-modal-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.cancel-modal-buttons button {
+    padding: 9px 18px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.go-back-btn {
+    background: #e0e0e0;
+    color: #333;
+}
+
+.confirm-cancel-btn {
+    background: #dc3545;
+    color: white;
+}
+
+.confirm-return-btn {
+    background: #0d6efd;
+    color: white;
+}
+
+
+/* ================= WEBSITE MESSAGE MODAL ================= */
+
+.message-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.55);
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+}
+
+.message-box {
+    background: white;
+    width: 90%;
+    max-width: 400px;
+    padding: 25px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+}
+
+.message-box h3 {
+    margin-top: 0;
+}
+
+.message-box button {
+    margin-top: 15px;
+    padding: 9px 25px;
+    border: none;
+    border-radius: 5px;
+    background: #0d6efd;
+    color: white;
+    cursor: pointer;
+}
+
+
+/* ================= REFUND INFO ================= */
+
+.refund-info {
+    margin-top: 10px;
+    padding: 10px;
+    background: #f8f9fa;
+    border-radius: 6px;
+}
+
+
+/* ================= ORDER ACTION BUTTONS ================= */
+
+.order-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 18px;
+    flex-wrap: wrap;
+}
+
+.order-action-btn {
+    padding: 10px 16px;
+    border-radius: 5px;
+    font-size: 15px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: 0.2s;
+}
+
+.cancel-btn {
+    background: white;
+    color: #dc3545;
+    border: 1px solid #dc3545;
+}
+
+.cancel-btn:hover {
+    background: #dc3545;
+    color: white;
+}
+
+.return-btn {
+    background: white;
+    color: #0d6efd;
+    border: 1px solid #0d6efd;
+}
+
+.return-btn:hover {
+    background: #0d6efd;
+    color: white;
+}
+
+.refund-btn {
+    background: white;
+    color: #198754;
+    border: 1px solid #198754;
+}
+
+.refund-btn:hover {
+    background: #198754;
+    color: white;
+}
+
+
+/* ================= MOBILE ================= */
+
+@media (max-width: 600px) {
+
+    .order-actions {
+        gap: 8px;
+    }
+
+    .order-action-btn {
+        padding: 9px 12px;
+        font-size: 13px;
+    }
+
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<!-- ================= HEADER ================= -->
+
+<header>
+
+<div class="logo">
+<h2>🛍️ ShopSphere</h2>
+</div>
+
+<div class="search-box">
+
+<input
+type="text"
+id="searchInput"
+placeholder="Search Products..."
+>
+
+<button>
+<i class="fa fa-search"></i>
+</button>
+
+</div>
+
+<nav>
+
+<ul>
+
+<li>
+<a href="index.html">Home</a>
+</li>
+
+<li>
+<a href="categories.html">Categories</a>
+</li>
+
+<li>
+<a href="products.html">Products</a>
+</li>
+
+<li>
+<a href="cart.html">🛒 Cart</a>
+</li>
+
+<li>
+<a href="my-account.html">👤 My Account</a>
+</li>
+
+</ul>
+
+</nav>
+
+</header>
+
+
+
+<!-- ================= MY ORDERS ================= -->
+
+<section class="orders-section">
+
+<h2>📦 My Orders</h2>
+
+<div
+class="orders-container"
+id="ordersContainer"
+>
+
+<p id="ordersMessage">
+Loading your orders...
+</p>
+
+</div>
+
+</section>
+
+
+
+<!-- ================= CANCEL ORDER MODAL ================= -->
+
+<div id="cancelModal" class="cancel-modal">
+
+<div class="cancel-modal-box">
+
+<h2>Cancel Order</h2>
+
+<p>
+Why do you want to cancel this order?
+</p>
+
+<label class="cancel-reason">
+<input
+type="radio"
+name="cancelReason"
+value="Changed my mind"
+>
+Changed my mind
+</label>
+
+<label class="cancel-reason">
+<input
+type="radio"
+name="cancelReason"
+value="Ordered by mistake"
+>
+Ordered by mistake
+</label>
+
+<label class="cancel-reason">
+<input
+type="radio"
+name="cancelReason"
+value="Found a better price"
+>
+Found a better price
+</label>
+
+<label class="cancel-reason">
+<input
+type="radio"
+name="cancelReason"
+value="Product taking too long"
+>
+Product taking too long
+</label>
+
+<label class="cancel-reason">
+<input
+type="radio"
+name="cancelReason"
+value="Product no longer needed"
+>
+Product no longer needed
+</label>
+
+<label class="cancel-reason">
+<input
+type="radio"
+name="cancelReason"
+value="Other"
+>
+Other
+</label>
+
+<div class="cancel-modal-buttons">
+
+<button
+class="go-back-btn"
+onclick="closeCancelModal()"
+>
+Go Back
+</button>
+
+<button
+class="confirm-cancel-btn"
+onclick="confirmCancelOrder()"
+>
+Cancel Order
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+
+
+<!-- ================= RETURN ORDER MODAL ================= -->
+
+<div id="returnModal" class="cancel-modal">
+
+<div class="cancel-modal-box">
+
+<h2>Return Order</h2>
+
+<p>
+Why do you want to return this product?
+</p>
+
+<label class="cancel-reason">
+<input
+type="radio"
+name="returnReason"
+value="Product damaged"
+>
+Product damaged
+</label>
+
+<label class="cancel-reason">
+<input
+type="radio"
+name="returnReason"
+value="Wrong product received"
+>
+Wrong product received
+</label>
+
+<label class="cancel-reason">
+<input
+type="radio"
+name="returnReason"
+value="Product not as described"
+>
+Product not as described
+</label>
+
+<label class="cancel-reason">
+<input
+type="radio"
+name="returnReason"
+value="Size / fit issue"
+>
+Size / fit issue
+</label>
+
+<label class="cancel-reason">
+<input
+type="radio"
+name="returnReason"
+value="Quality issue"
+>
+Quality issue
+</label>
+
+<label class="cancel-reason">
+<input
+type="radio"
+name="returnReason"
+value="Other"
+>
+Other
+</label>
+
+<div class="cancel-modal-buttons">
+
+<button
+class="go-back-btn"
+onclick="closeReturnModal()"
+>
+Go Back
+</button>
+
+<button
+class="confirm-return-btn"
+onclick="confirmReturnOrder()"
+>
+Submit Return Request
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+
+
+<!-- ================= WEBSITE MESSAGE MODAL ================= -->
+
+<div id="messageModal" class="message-modal">
+
+<div class="message-box">
+
+<h3 id="messageTitle">
+ShopSphere
+</h3>
+
+<p id="messageText">
+Message
+</p>
+
+<button onclick="closeMessageModal()">
+OK
+</button>
+
+</div>
+
+</div>
+
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+<h2>🛍️ ShopSphere</h2>
+
+<p>
+Your One Stop Shopping Destination.
+</p>
+
+<p>
+Email: shopsphere@gmail.com
+</p>
+
+<p>
+Phone: +91 9898555789
+</p>
+
+<p>
+© 2026 ShopSphere. All Rights Reserved.
+</p>
+
+<p>
+
+<a href="about.html">About</a>
+|
+<a href="contact.html">Contact</a>
+|
+<a href="refund-policy.html">Refund Policy</a>
+|
+<a href="replace-return.html">Return Policy</a>
+
+</p>
+
+<p>
+
+<a href="#">Facebook</a>
+|
+<a href="#">Instagram</a>
+|
+<a href="#">Twitter</a>
+|
+<a href="#">YouTube</a>
+
+</p>
+
+</footer>
+
+
+
+<script src="script.js"></script>
+
+
+
+<!-- ================= MY ORDERS SCRIPT ================= -->
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+const ordersContainer =
+document.getElementById("ordersContainer");
+
+const token =
+localStorage.getItem("shopSphereToken");
+
+let selectedOrderId = null;
+
+
+/* ================= CHECK LOGIN ================= */
+
+if (!token) {
+
+ordersContainer.innerHTML =
+"<p>Please login to view your orders.</p>";
+
+return;
+
+}
+
+
+/* ================= LOAD ORDERS ================= */
+
+loadOrders();
+
+
+function loadOrders() {
+
+fetch(
+"http://localhost:5000/api/orders/my-orders",
+{
+method: "GET",
+headers: {
+"Authorization": "Bearer " + token
+}
+}
+)
+
+.then(function (response) {
+
+if (!response.ok) {
+throw new Error("Failed to fetch orders");
+}
+
+return response.json();
+
+})
+
+.then(function (orders) {
+
+console.log("MY ORDERS:", orders);
+
+
+if (!orders || orders.length === 0) {
+
+ordersContainer.innerHTML =
+"<p>You have not placed any orders yet.</p>";
+
+return;
+
+}
+
+ordersContainer.innerHTML = "";
+
+
+/* ================= DISPLAY ORDERS ================= */
+
+orders.forEach(function (order) {
+
+const quantity =
+Number(order.quantity || 1);
+
+const price =
+Number(order.price || 0);
+
+const total =
+price * quantity;
+
+
+/* ================= ORDER DATE ================= */
+
+let orderDate = "-";
+
+if (order.createdAt) {
+
+orderDate =
+new Date(order.createdAt)
+.toLocaleDateString(
+"en-IN",
+{
+day: "numeric",
+month: "long",
+year: "numeric"
+}
+);
+
+}
+
+
+/* ================= DELIVERY DATE ================= */
+
+let deliveryDate = "-";
+
+if (order.createdAt) {
+
+const delivery =
+new Date(order.createdAt);
+
+delivery.setDate(
+delivery.getDate() + 5
+);
+
+deliveryDate =
+delivery.toLocaleDateString(
+"en-IN",
+{
+day: "numeric",
+month: "long",
+year: "numeric"
+}
+);
+
+}
+
+
+/* ================= STATUS ================= */
+
+let statusClass = "shipped";
+
+if (order.status === "Delivered") {
+statusClass = "delivered";
+}
+
+if (order.status === "Cancelled") {
+statusClass = "cancelled";
+}
+
+
+/* ================= REFUND INFO ================= */
+
+let refundInfo = "";
+
+if (
+order.status === "Return Requested" ||
+order.status === "Return Approved" ||
+order.status === "Refund Initiated" ||
+order.status === "Refund Completed"
+) {
+
+refundInfo =
+
+"<div class='refund-info'>" +
+
+"<p>" +
+"<b>Refund Amount:</b> ₹" +
+total.toLocaleString("en-IN") +
+"</p>" +
+
+"<p>" +
+"<b>Refund Status:</b> " +
+getRefundStatus(order.status) +
+"</p>" +
+
+"<p>" +
+"<b>Refund Method:</b> " +
+"Original Payment Method" +
+"</p>" +
+
+"</div>";
+
+}
+
+
+/* ================= ORDER BUTTONS ================= */
+
+let orderButtons = `
+
+<div class="order-actions">
+
+<button
+class="order-action-btn cancel-btn"
+onclick="cancelOrder('${order._id}')">
+❌ Cancel Order
+</button>
+
+<button
+class="order-action-btn return-btn"
+onclick="returnOrder('${order._id}')">
+🔄 Return Order
+</button>
+
+<button
+class="order-action-btn refund-btn"
+onclick="showRefundStatus('${order.status}', ${total})">
+💰 Refund Status
+</button>
+
+</div>
+
+`;
+
+
+/* ================= CREATE CARD ================= */
+
+const orderCard =
+document.createElement("div");
+
+orderCard.className =
+"order-card";
+
+orderCard.innerHTML =
+
+"<img src='" +
+order.image +
+"' alt='" +
+(order.productName || "Product") +
+"'>" +
+
+"<div class='order-info'>" +
+
+"<h3>" +
+(order.productName || "Product") +
+"</h3>" +
+
+"<p>" +
+"<b>Order ID:</b> #" +
+order._id +
+"</p>" +
+
+"<p>" +
+"<b>Price:</b> ₹" +
+price.toLocaleString("en-IN") +
+"</p>" +
+
+"<p>" +
+"<b>Quantity:</b> " +
+quantity +
+"</p>" +
+
+"<p>" +
+"<b>Total:</b> ₹" +
+total.toLocaleString("en-IN") +
+"</p>" +
+
+"<p>" +
+"<b>Order Date:</b> " +
+orderDate +
+"</p>" +
+
+"<p>" +
+"<b>Estimated Delivery:</b> " +
+deliveryDate +
+"</p>" +
+
+"<p class='" +
+statusClass +
+"'>" +
+
+"<b>Status:</b> " +
+(order.status || "Ordered") +
+
+"</p>" +
+
+refundInfo +
+
+orderButtons +
+
+"</div>";
+
+
+ordersContainer.appendChild(orderCard);
+
+});
+
+})
+
+.catch(function (error) {
+
+console.log(
+"MY ORDERS ERROR:",
+error
+);
+
+ordersContainer.innerHTML =
+
+"<p style='color:red;'>" +
+
+"Failed to load orders. " +
+
+"Please make sure the server is running." +
+
+"</p>";
+
+});
+
+}
+
+
+/* ================= CANCEL ORDER ================= */
+
+window.cancelOrder = function (orderId) {
+
+selectedOrderId = orderId;
+
+document
+.querySelectorAll(
+'input[name="cancelReason"]'
+)
+.forEach(function (radio) {
+
+radio.checked = false;
+
+});
+
+document.getElementById(
+"cancelModal"
+).style.display = "flex";
+
+};
+
+
+/* ================= CLOSE CANCEL ================= */
+
+window.closeCancelModal = function () {
+
+document.getElementById(
+"cancelModal"
+).style.display = "none";
+
+selectedOrderId = null;
+
+};
+
+
+/* ================= CONFIRM CANCEL ================= */
+
+window.confirmCancelOrder = function () {
+
+const selectedReason =
+
+document.querySelector(
+'input[name="cancelReason"]:checked'
+);
+
+if (!selectedReason) {
+
+showMessage(
+"Select a Reason",
+"Please select a reason for cancelling the order."
+);
+
+return;
+
+}
+
+const reason =
+selectedReason.value;
+
+console.log(
+"Cancel Reason:",
+reason
+);
+
+fetch(
+"http://localhost:5000/api/orders/" +
+selectedOrderId,
+{
+method: "PUT",
+
+headers: {
+"Content-Type": "application/json"
+},
+
+body: JSON.stringify({
+status: "Cancelled"
+})
+}
+)
+
+.then(function (response) {
+
+if (!response.ok) {
+throw new Error("Failed to cancel order");
+}
+
+return response.json();
+
+})
+
+.then(function () {
+
+closeCancelModal();
+
+showMessage(
+"Order Cancelled",
+"Your order has been cancelled successfully. ✅"
+);
+
+loadOrders();
+
+})
+
+.catch(function () {
+
+closeCancelModal();
+
+showMessage(
+"Cancellation Failed",
+"Failed to cancel order. Please try again."
+);
+
+});
+
+};
+
+
+/* ================= RETURN ORDER ================= */
+
+window.returnOrder = function (orderId) {
+
+selectedOrderId = orderId;
+
+document
+.querySelectorAll(
+'input[name="returnReason"]'
+)
+.forEach(function (radio) {
+
+radio.checked = false;
+
+});
+
+document.getElementById(
+"returnModal"
+).style.display = "flex";
+
+};
+
+
+/* ================= CLOSE RETURN ================= */
+
+window.closeReturnModal = function () {
+
+document.getElementById(
+"returnModal"
+).style.display = "none";
+
+selectedOrderId = null;
+
+};
+
+
+/* ================= CONFIRM RETURN ================= */
+
+window.confirmReturnOrder = function () {
+
+const selectedReason =
+
+document.querySelector(
+'input[name="returnReason"]:checked'
+);
+
+if (!selectedReason) {
+
+showMessage(
+"Select a Reason",
+"Please select a reason for returning the order."
+);
+
+return;
+
+}
+
+const reason =
+selectedReason.value;
+
+console.log(
+"Return Reason:",
+reason
+);
+
+fetch(
+"http://localhost:5000/api/orders/" +
+selectedOrderId,
+{
+method: "PUT",
+
+headers: {
+"Content-Type": "application/json"
+},
+
+body: JSON.stringify({
+status: "Return Requested"
+})
+}
+)
+
+.then(function (response) {
+
+if (!response.ok) {
+throw new Error("Failed to request return");
+}
+
+return response.json();
+
+})
+
+.then(function () {
+
+closeReturnModal();
+
+showMessage(
+"Return Request Submitted",
+"Your return request has been submitted successfully. 🔄"
+);
+
+loadOrders();
+
+})
+
+.catch(function () {
+
+closeReturnModal();
+
+showMessage(
+"Return Request Failed",
+"Failed to submit return request. Please try again."
+);
+
+});
+
+};
+
+
+/* ================= REFUND STATUS ================= */
+
+window.showRefundStatus = function (status, amount) {
+
+let refundStatus =
+getRefundStatus(status);
+
+let message =
+
+"Refund Amount: ₹" +
+Number(amount).toLocaleString("en-IN") +
+"\n\n" +
+
+"Refund Status: " +
+refundStatus +
+"\n\n" +
+
+"Refund Method: Original Payment Method";
+
+showMessage(
+"Refund Status",
+message
+);
+
+};
+
+
+function getRefundStatus(status) {
+
+if (status === "Return Requested") {
+return "Pending";
+}
+
+if (status === "Return Approved") {
+return "Return Approved";
+}
+
+if (status === "Refund Initiated") {
+return "Refund Initiated";
+}
+
+if (status === "Refund Completed") {
+return "Refund Completed ✅";
+}
+
+return "Not Applicable";
+}
+
+
+/* ================= WEBSITE MESSAGE ================= */
+
+window.showMessage = function (
+title,
+message
+) {
+
+document.getElementById(
+"messageTitle"
+).textContent = title;
+
+document.getElementById(
+"messageText"
+).textContent = message;
+
+document.getElementById(
+"messageModal"
+).style.display = "flex";
+
+};
+
+
+/* ================= CLOSE MESSAGE ================= */
+
+window.closeMessageModal = function () {
+
+document.getElementById(
+"messageModal"
+).style.display = "none";
+
+};
+
+});
+
+</script>
+
+</body>
+</html>

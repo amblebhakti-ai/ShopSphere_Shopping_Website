@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Edit Profile | ShopSphere</title>
+
+<link rel="stylesheet" href="style.css">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<style>
+.edit-profile-section {
+    padding: 50px 20px;
+    background: #f5f5f5;
+    min-height: 70vh;
+}
+
+.edit-profile-container {
+    max-width: 600px;
+    margin: auto;
+    background: white;
+    padding: 35px;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.12);
+}
+
+.edit-profile-container h2 {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.profile-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.profile-form label {
+    font-weight: bold;
+}
+
+.profile-form input {
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 15px;
+}
+
+.profile-buttons {
+    display: flex;
+    gap: 12px;
+    margin-top: 15px;
+}
+
+.save-profile-btn,
+.back-account-btn {
+    border: none;
+    padding: 12px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.save-profile-btn {
+    background: #0d6efd;
+    color: white;
+}
+
+.back-account-btn {
+    background: #777;
+    color: white;
+}
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<div class="logo">
+<h2>🛍️ ShopSphere</h2>
+</div>
+
+<div class="search-box">
+<input type="text" id="searchInput" placeholder="Search Products...">
+<button><i class="fa fa-search"></i></button>
+</div>
+
+<nav>
+<ul>
+
+<li><a href="index.html">Home</a></li>
+<li><a href="categories.html">Categories</a></li>
+<li><a href="products.html">Products</a></li>
+<li><a href="cart.html">🛒 Cart</a></li>
+<li><a href="wishlist.html">❤️ Wishlist</a></li>
+
+</ul>
+</nav>
+
+</header>
+
+
+<section class="edit-profile-section">
+
+<div class="edit-profile-container">
+
+<h2>✏️ Edit Profile</h2>
+
+<form id="profileForm" class="profile-form">
+
+<label>Name</label>
+<input type="text" id="profileName" required>
+
+<label>Email</label>
+<input type="email" id="profileEmail" required>
+
+<label>Mobile Number</label>
+<input type="text" id="profilePhone" placeholder="Enter mobile number">
+
+<label>Address</label>
+<input type="text" id="profileAddress" placeholder="Enter address">
+
+<div class="profile-buttons">
+
+<button type="submit" class="save-profile-btn">
+💾 Save Changes
+</button>
+
+<button type="button" class="back-account-btn"
+onclick="window.location.href='my-account.html'">
+↩️ Back
+</button>
+
+</div>
+
+</form>
+
+</div>
+
+</section>
+
+
+<footer>
+
+<h2>🛍️ ShopSphere</h2>
+
+<p>Your One Stop Shopping Destination.</p>
+
+<p>Email: shopsphere@gmail.com</p>
+
+<p>Phone: +91 9898555789</p>
+
+<p>© 2026 ShopSphere. All Rights Reserved.</p>
+
+<p>
+<a href="about.html">About</a> |
+<a href="contact.html">Contact</a> |
+<a href="refund-policy.html">Refund Policy</a> |
+<a href="replace-return.html">Return Policy</a>
+</p>
+
+</footer>
+
+
+<script src="script.js"></script>
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const userData =
+        localStorage.getItem("shopSphereUser");
+
+    if (userData) {
+
+        const user = JSON.parse(userData);
+
+        document.getElementById("profileName").value =
+            user.name || "";
+
+        document.getElementById("profileEmail").value =
+            user.email || "";
+
+    }
+
+});
+
+
+document.getElementById("profileForm").addEventListener("submit", function(event) {
+
+    event.preventDefault();
+
+    const name =
+        document.getElementById("profileName").value;
+
+    const email =
+        document.getElementById("profileEmail").value;
+
+    const userData =
+        JSON.parse(localStorage.getItem("shopSphereUser")) || {};
+
+    const phone =
+    document.getElementById("profilePhone").value;
+
+    const address =
+    document.getElementById("profileAddress").value;    
+
+
+    userData.name = name;
+    userData.email = email;
+    userData.phone = phone;
+    userData.address = address;
+
+    localStorage.setItem(
+        "shopSphereUser",
+        JSON.stringify(userData)
+    );
+
+    alert("Profile updated successfully ✅");
+
+    window.location.href = "my-account.html";
+
+});
+
+</script>
+
+</body>
+</html>

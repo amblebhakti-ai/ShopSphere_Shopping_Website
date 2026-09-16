@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Order Successful | ShopSphere</title>
+
+<link rel="stylesheet" href="style.css">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+</head>
+
+<body>
+
+
+<!-- ================= HEADER ================= -->
+
+<header>
+
+<div class="logo">
+<h2>🛍️ ShopSphere</h2>
+</div>
+
+
+<div class="search-box">
+
+<input
+    type="text"
+    id="searchInput"
+    placeholder="Search Products..."
+>
+
+<button>
+
+<i class="fa fa-search"></i>
+
+</button>
+
+</div>
+
+
+<nav>
+
+<ul>
+
+<li>
+<a href="index.html">Home</a>
+</li>
+
+<li>
+<a href="categories.html">Categories</a>
+</li>
+
+<li>
+<a href="products.html">Products</a>
+</li>
+
+<li>
+<a href="my-orders.html">📦 My Orders</a>
+</li>
+
+<li>
+<a href="my-account.html">👤 My Account</a>
+</li>
+
+</ul>
+
+</nav>
+
+</header>
+
+
+
+<!-- ================= ORDER SUCCESS ================= -->
+
+<section class="success-section">
+
+<div class="success-box">
+
+
+<i class="fa-solid fa-circle-check success-icon"></i>
+
+
+<h1>
+🎉 Order Placed Successfully!
+</h1>
+
+
+<p>
+
+Thank you for shopping with <b>ShopSphere</b>.
+
+Your order has been placed successfully.
+
+</p>
+
+
+<hr>
+
+
+<h3>
+📦 Order Details
+</h3>
+
+
+
+<!-- ORDER ID -->
+
+<p>
+
+<b>Order ID :</b>
+
+<span id="success-order-id">
+-
+</span>
+
+</p>
+
+
+
+<!-- PAYMENT -->
+
+<p>
+
+<b>Payment :</b>
+
+<span id="success-payment">
+Successful ✅
+</span>
+
+</p>
+
+
+
+<!-- ITEMS -->
+
+<p>
+
+<b>Items :</b>
+
+<span id="success-items">
+-
+</span>
+
+</p>
+
+
+
+<!-- TOTAL -->
+
+<p>
+
+<b>Total Amount :</b>
+
+<span id="success-total">
+₹0
+</span>
+
+</p>
+
+
+
+<!-- DELIVERY -->
+
+<p>
+
+<b>Estimated Delivery :</b>
+
+<span id="delivery-date">
+-
+</span>
+
+</p>
+
+
+
+<hr>
+
+
+
+<a
+href="my-orders.html"
+class="order-btn"
+>
+
+📦 View My Orders
+
+</a>
+
+
+
+<a
+href="products.html"
+class="shop-btn"
+>
+
+🛍 Continue Shopping
+
+</a>
+
+
+</div>
+
+</section>
+
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+<h2>
+🛍️ ShopSphere
+</h2>
+
+
+<p>
+Your One Stop Shopping Destination.
+</p>
+
+
+<p>
+Email: shopsphere@gmail.com
+</p>
+
+
+<p>
+Phone: +91 9898555789
+</p>
+
+
+<p>
+© 2026 ShopSphere. All Rights Reserved.
+</p>
+
+
+
+<p>
+
+<a href="about.html">
+About
+</a>
+
+|
+
+<a href="contact.html">
+Contact
+</a>
+
+|
+
+<a href="refund-policy.html">
+Refund Policy
+</a>
+
+|
+
+<a href="replace-return.html">
+Return Policy
+</a>
+
+</p>
+
+
+
+<p>
+
+<a href="#">
+Facebook
+</a>
+
+|
+
+<a href="#">
+Instagram
+</a>
+
+|
+
+<a href="#">
+Twitter
+</a>
+
+|
+
+<a href="#">
+YouTube
+</a>
+
+</p>
+
+</footer>
+
+
+
+<!-- ================= SCRIPT ================= -->
+
+<script src="script.js"></script>
+
+
+
+<script>
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+
+        // =====================================
+        // GET SAVED ORDER
+        // =====================================
+
+        const order =
+            JSON.parse(
+                localStorage.getItem(
+                    "shopSphereOrder"
+                )
+            );
+
+
+        // =====================================
+        // CHECK ORDER
+        // =====================================
+
+        if (!order) {
+
+            return;
+
+        }
+
+
+
+        // =====================================
+        // ORDER ID
+        // =====================================
+
+        const orderId =
+            document.getElementById(
+                "success-order-id"
+            );
+
+
+        if (orderId) {
+
+            orderId.innerText =
+                "#" + order._id;
+
+        }
+
+
+
+        // =====================================
+        // PRODUCT NAME + QUANTITY
+        // =====================================
+
+        const successItems =
+            document.getElementById(
+                "success-items"
+            );
+
+
+        const quantity =
+            Number(
+                order.quantity || 1
+            );
+
+
+        if (successItems) {
+
+            successItems.innerText =
+                order.productName +
+                " × " +
+                quantity;
+
+        }
+
+
+
+        // =====================================
+        // TOTAL AMOUNT
+        // =====================================
+
+        const successTotal =
+            document.getElementById(
+                "success-total"
+            );
+
+
+        const price =
+            Number(
+                order.price || 0
+            );
+
+
+        const total =
+            price * quantity;
+
+
+        if (successTotal) {
+
+            successTotal.innerText =
+                "₹" +
+                total.toLocaleString(
+                    "en-IN"
+                );
+
+        }
+
+
+
+        // =====================================
+        // PAYMENT
+        // =====================================
+
+        const successPayment =
+            document.getElementById(
+                "success-payment"
+            );
+
+
+        if (successPayment) {
+
+            successPayment.innerText =
+                "Successful ✅";
+
+        }
+
+
+
+        // =====================================
+        // ESTIMATED DELIVERY DATE
+        // =====================================
+
+        const deliveryDate =
+            document.getElementById(
+                "delivery-date"
+            );
+
+
+        let orderDate;
+
+
+        if (order.createdAt) {
+
+            orderDate =
+                new Date(
+                    order.createdAt
+                );
+
+        } else {
+
+            orderDate =
+                new Date();
+
+        }
+
+
+
+        // Add 5 days
+
+        orderDate.setDate(
+            orderDate.getDate() + 5
+        );
+
+
+
+        if (deliveryDate) {
+
+            deliveryDate.innerText =
+                orderDate.toLocaleDateString(
+                    "en-IN",
+                    {
+                        day: "numeric",
+                        month: "long",
+                        year: "numeric"
+                    }
+                );
+
+        }
+
+    }
+
+);
+
+</script>
+
+
+
+</body>
+
+</html>

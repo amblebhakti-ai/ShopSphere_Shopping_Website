@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Checkout | ShopSphere</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+</head>
+
+
+<body>
+
+
+<!-- ================= HEADER ================= -->
+
+<header>
+
+    <div class="logo">
+        <h2>🛍️ ShopSphere</h2>
+    </div>
+
+
+    <div class="search-box">
+
+        <input
+            type="text"
+            placeholder="Search Products..."
+        >
+
+        <button>
+            <i class="fa fa-search"></i>
+        </button>
+
+    </div>
+
+
+    <nav>
+
+        <ul>
+
+            <li>
+                <a href="index.html">Home</a>
+            </li>
+
+            <li>
+                <a href="categories.html">Categories</a>
+            </li>
+
+            <li>
+                <a href="products.html">Products</a>
+            </li>
+
+            <li>
+                <a href="cart.html">🛒 Cart</a>
+            </li>
+
+            <li>
+                <a href="wishlist.html">❤️ Wishlist</a>
+            </li>
+
+            <li>
+                <a href="my-account.html">👤 My Account</a>
+            </li>
+
+        </ul>
+
+    </nav>
+
+</header>
+
+
+
+<!-- ================= CHECKOUT ================= -->
+
+<section class="checkout-section">
+
+    <h2>🛍 Checkout</h2>
+
+
+    <div class="checkout-container">
+
+
+        <!-- ================= LEFT SIDE ================= -->
+
+        <div class="checkout-left">
+
+
+            <!-- DELIVERY ADDRESS -->
+
+            <div class="checkout-box">
+
+                <h3>🏠 Delivery Address</h3>
+
+                <input
+                    type="text"
+                    placeholder="Full Name"
+                >
+
+                <input
+                    type="text"
+                    placeholder="Mobile Number"
+                >
+
+                <input
+                    type="text"
+                    placeholder="Pincode"
+                >
+
+                <textarea
+                    placeholder="House No, Street, Area, City"
+                ></textarea>
+
+                <input
+                    type="text"
+                    placeholder="State"
+                >
+
+                <input
+                    type="text"
+                    placeholder="Country"
+                    value="India"
+                >
+
+            </div>
+
+
+
+            <!-- CONTACT DETAILS -->
+
+            <div class="checkout-box">
+
+                <h3>📱 Contact Details</h3>
+
+                <input
+                    type="email"
+                    placeholder="Email Address"
+                >
+
+                <input
+                    type="text"
+                    placeholder="Alternate Mobile Number"
+                >
+
+            </div>
+
+
+
+            <!-- ================= ORDER SUMMARY ================= -->
+
+            <div class="checkout-box">
+
+                <h3>📦 Order Summary</h3>
+
+                <div id="checkout-items">
+
+                    <!-- Buy Now product will appear here -->
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- ================= RIGHT SIDE ================= -->
+
+        <div class="checkout-right">
+
+
+            <!-- ================= PRICE DETAILS ================= -->
+
+            <div class="price-box">
+
+                <h3>💰 Price Details</h3>
+
+                <hr>
+
+
+                <p>
+
+                    Price
+
+                    <span id="checkout-price">
+                        ₹0
+                    </span>
+
+                </p>
+
+
+                <p>
+
+                    Discount
+
+                    <span
+                        id="checkout-discount"
+                        style="color:green;"
+                    >
+                        - ₹0
+                    </span>
+
+                </p>
+
+
+                <p>
+
+                    Delivery Charges
+
+                    <span style="color:green;">
+                        FREE
+                    </span>
+
+                </p>
+
+
+                <hr>
+
+
+                <h2>
+
+                    Total Amount
+
+                    <span id="checkout-total">
+                        ₹0
+                    </span>
+
+                </h2>
+
+
+                <p
+                    id="checkout-saved"
+                    style="color:green;"
+                >
+                    🎉 You saved ₹0 on this order
+                </p>
+
+            </div>
+
+
+
+            <!-- ================= PAYMENT OPTIONS ================= -->
+
+            <div class="checkout-box">
+
+                <h3>💳 Select Payment Method</h3>
+
+
+                <label>
+
+                    <input
+                        type="radio"
+                        name="payment"
+                        value="Cash on Delivery"
+                        checked
+                    >
+
+                    Cash on Delivery (COD)
+
+                </label>
+
+
+                <br><br>
+
+
+                <label>
+
+                    <input
+                        type="radio"
+                        name="payment"
+                        value="UPI"
+                    >
+
+                    UPI (Google Pay / PhonePe / Paytm)
+
+                </label>
+
+
+                <br><br>
+
+
+                <label>
+
+                    <input
+                        type="radio"
+                        name="payment"
+                        value="Credit/Debit Card"
+                    >
+
+                    Credit / Debit Card
+
+                </label>
+
+
+                <br><br>
+
+
+                <label>
+
+                    <input
+                        type="radio"
+                        name="payment"
+                        value="Net Banking"
+                    >
+
+                    Net Banking
+
+                </label>
+
+
+                <br><br>
+
+
+                <!-- ================= PLACE ORDER BUTTON ================= -->
+
+                <button
+                    type="button"
+                    id="placeOrderBtn"
+                    class="place-order-btn"
+                >
+                    🛍 Place Order
+                </button>
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+    <h2>🛍️ ShopSphere</h2>
+
+    <p>
+        Your One Stop Shopping Destination.
+    </p>
+
+    <p>
+        Email: shopsphere@gmail.com
+    </p>
+
+    <p>
+        Phone: +91 9898555789
+    </p>
+
+    <p>
+        © 2026 ShopSphere. All Rights Reserved.
+    </p>
+
+
+    <p>
+
+        <a href="about.html">
+            About
+        </a>
+
+        |
+
+        <a href="contact.html">
+            Contact
+        </a>
+
+        |
+
+        <a href="refund-policy.html">
+            Refund Policy
+        </a>
+
+        |
+
+        <a href="replace-return.html">
+            Return Policy
+        </a>
+
+    </p>
+
+
+    <p>
+
+        <a href="#">
+            Facebook
+        </a>
+
+        |
+
+        <a href="#">
+            Instagram
+        </a>
+
+        |
+
+        <a href="#">
+            Twitter
+        </a>
+
+        |
+
+        <a href="#">
+            YouTube
+        </a>
+
+    </p>
+
+</footer>
+
+
+
+<!-- ================= SHOPSPHERE SCRIPT ================= -->
+
+<script src="script.js"></script>
+
+
+
+<!-- ================= CHECKOUT SCRIPT ================= -->
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+
+    // ==========================================
+    // GET BUY NOW PRODUCT
+    // ==========================================
+
+    const buyNowProduct =
+        JSON.parse(
+            localStorage.getItem(
+                "shopSphereBuyNow"
+            )
+        );
+
+
+    // ==========================================
+    // GET HTML ELEMENTS
+    // ==========================================
+
+    const checkoutItems =
+        document.getElementById(
+            "checkout-items"
+        );
+
+
+    const checkoutPrice =
+        document.getElementById(
+            "checkout-price"
+        );
+
+
+    const checkoutDiscount =
+        document.getElementById(
+            "checkout-discount"
+        );
+
+
+    const checkoutTotal =
+        document.getElementById(
+            "checkout-total"
+        );
+
+
+    const checkoutSaved =
+        document.getElementById(
+            "checkout-saved"
+        );
+
+
+    const placeOrderBtn =
+        document.getElementById(
+            "placeOrderBtn"
+        );
+
+
+
+    // ==========================================
+    // CHECK PRODUCT
+    // ==========================================
+
+    if (!buyNowProduct) {
+
+        checkoutItems.innerHTML = `
+            <p>
+                No product selected.
+            </p>
+        `;
+
+        if (placeOrderBtn) {
+
+            placeOrderBtn.disabled = true;
+
+        }
+
+        return;
+
+    }
+
+
+
+    // ==========================================
+    // PRODUCT DISPLAY
+    // ==========================================
+
+    checkoutItems.innerHTML = `
+
+        <div class="order-item">
+
+            <img
+                src="${buyNowProduct.image}"
+                alt="${buyNowProduct.name}"
+            >
+
+            <div>
+
+                <h4>
+                    ${buyNowProduct.name}
+                </h4>
+
+                <p>
+                    Qty : ${buyNowProduct.quantity || 1}
+                </p>
+
+                <p>
+                    ₹${Number(
+                        buyNowProduct.price
+                    ).toLocaleString("en-IN")}
+                </p>
+
+            </div>
+
+        </div>
+
+    `;
+
+
+
+    // ==========================================
+    // PRICE CALCULATION
+    // ==========================================
+
+    const quantity =
+        Number(
+            buyNowProduct.quantity || 1
+        );
+
+
+    const price =
+        Number(
+            buyNowProduct.price
+        ) * quantity;
+
+
+    // Currently no separate discount
+    const discount = 0;
+
+
+    const total =
+        price - discount;
+
+
+
+    // ==========================================
+    // DISPLAY PRICE
+    // ==========================================
+
+    checkoutPrice.innerText =
+        "₹" +
+        price.toLocaleString("en-IN");
+
+
+    checkoutDiscount.innerText =
+        "- ₹" +
+        discount.toLocaleString("en-IN");
+
+
+    checkoutTotal.innerText =
+        "₹" +
+        total.toLocaleString("en-IN");
+
+
+    checkoutSaved.innerText =
+        "🎉 You saved ₹" +
+        discount.toLocaleString("en-IN") +
+        " on this order";
+
+
+
+    // ==========================================
+    // PLACE ORDER - SAVE TO MONGODB
+    // ==========================================
+
+    if (placeOrderBtn) {
+
+        placeOrderBtn.addEventListener(
+            "click",
+            async function () {
+
+
+                // ==================================
+                // CHECK LOGIN
+                // ==================================
+
+                const token =
+                    localStorage.getItem(
+                        "shopSphereToken"
+                    );
+
+
+                if (!token) {
+
+                    alert(
+                        "Please login before placing order."
+                    );
+
+                    window.location.href =
+                        "login.html";
+
+                    return;
+
+                }
+
+
+
+                // ==================================
+                // CHECK PRODUCT ID
+                // ==================================
+
+                if (
+                    !buyNowProduct.productId
+                ) {
+
+                    alert(
+                        "Product information not found. Please open the product again."
+                    );
+
+                    return;
+
+                }
+
+
+
+                // ==================================
+                // DISABLE BUTTON
+                // ==================================
+
+                placeOrderBtn.disabled = true;
+
+                placeOrderBtn.innerText =
+                    "Placing Order...";
+
+
+
+                try {
+
+
+                    // ==================================
+                    // SEND ORDER TO BACKEND
+                    // ==================================
+
+                    const response =
+                        await fetch(
+                            "http://localhost:5000/api/orders",
+                            {
+
+                                method: "POST",
+
+                                headers: {
+
+                                    "Content-Type":
+                                        "application/json",
+
+                                    "Authorization":
+                                        "Bearer " + token
+
+                                },
+
+                                body:
+                                    JSON.stringify({
+
+                                        productId:
+                                            buyNowProduct.productId,
+
+                                        quantity:
+                                            quantity
+
+                                    })
+
+                            }
+                        );
+
+
+
+                    // ==================================
+                    // GET SERVER RESPONSE
+                    // ==================================
+
+                    const data =
+                        await response.json();
+
+
+
+                    // ==================================
+                    // SUCCESS
+                    // ==================================
+
+                    if (response.ok) {
+
+
+                        // Save complete order locally
+
+                        localStorage.setItem(
+                            "shopSphereOrder",
+                            JSON.stringify(
+                                data.order
+                            )
+                        );
+
+
+                        // Remove Buy Now product
+
+                        localStorage.removeItem(
+                            "shopSphereBuyNow"
+                        );
+
+
+                        // Success message
+
+                        alert(
+                            "Order placed successfully 🎉"
+                        );
+
+
+                        // Go to success page
+
+                        window.location.href =
+                            "order-success.html";
+
+
+                    } else {
+
+
+                        // ==================================
+                        // SERVER ERROR
+                        // ==================================
+
+                        alert(
+                            data.message ||
+                            "Failed to place order ❌"
+                        );
+
+
+                        placeOrderBtn.disabled =
+                            false;
+
+
+                        placeOrderBtn.innerText =
+                            "🛍 Place Order";
+
+                    }
+
+
+                } catch (error) {
+
+
+                    // ==================================
+                    // CONNECTION ERROR
+                    // ==================================
+
+                    console.log(
+                        "Order error:",
+                        error
+                    );
+
+
+                    alert(
+                        "Server connection failed ❌"
+                    );
+
+
+                    placeOrderBtn.disabled =
+                        false;
+
+
+                    placeOrderBtn.innerText =
+                        "🛍 Place Order";
+
+                }
+
+            }
+        );
+
+    }
+
+});
+
+</script>
+
+
+
+</body>
+
+</html>

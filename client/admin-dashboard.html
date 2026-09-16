@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ShopSphere Admin Dashboard</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        body {
+            background: #f5f5f5;
+            margin: 0;
+        }
+
+        .admin-header {
+            background: #2874f0;
+            color: white;
+            padding: 18px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .admin-header h1 {
+            margin: 0;
+        }
+
+        .admin-logout {
+            background: white;
+            color: #2874f0;
+            border: none;
+            padding: 9px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .admin-container {
+            padding: 30px;
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        .admin-container h2 {
+            margin-bottom: 25px;
+        }
+
+        .dashboard-cards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .dashboard-card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+            text-align: center;
+        }
+
+        .dashboard-card .icon {
+            font-size: 35px;
+        }
+
+        .dashboard-card h3 {
+            margin: 12px 0 5px;
+        }
+
+        .dashboard-card p {
+            font-size: 28px;
+            font-weight: bold;
+            color: #2874f0;
+            margin: 0;
+        }
+
+        .admin-actions {
+            margin-top: 30px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .admin-action {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+        }
+
+        .admin-action button {
+            background: #2874f0;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        @media (max-width: 800px) {
+            .dashboard-cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .admin-actions {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 500px) {
+            .dashboard-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="admin-header">
+
+        <h1>🛍️ ShopSphere Admin</h1>
+
+        <button class="admin-logout" id="adminLogout">
+            🚪 Logout
+        </button>
+
+    </header>
+
+
+    <main class="admin-container">
+
+        <h2>📊 Admin Dashboard</h2>
+
+        <div class="dashboard-cards">
+
+            <div class="dashboard-card">
+                <div class="icon">📦</div>
+                <h3>Total Products</h3>
+                <p id="totalProducts">0</p>
+            </div>
+
+            <div class="dashboard-card">
+                <div class="icon">👥</div>
+                <h3>Total Users</h3>
+                <p id="totalUsers">0</p>
+            </div>
+
+            <div class="dashboard-card">
+                <div class="icon">🛒</div>
+                <h3>Total Orders</h3>
+                <p id="totalOrders">0</p>
+            </div>
+
+            <div class="dashboard-card">
+                <div class="icon">💰</div>
+                <h3>Total Sales</h3>
+                <p id="totalSales">₹0</p>
+            </div>
+
+        </div>
+
+
+        <div class="admin-actions">
+
+            <div class="admin-action">
+                <h3>📦 Product Management</h3>
+                <p>Add, edit and delete products.</p>
+
+                <button onclick="window.location.href='admin-products.html'">
+    Manage Products
+</button>
+            </div>
+
+
+            <div class="admin-action">
+                <h3>🛒 Order Management</h3>
+                <p>View and manage customer orders.</p>
+
+                <button onclick="location.href='admin-orders.html'">
+                    Manage Orders
+                </button>
+            </div>
+
+
+            <div class="admin-action">
+                <h3>👥 User Management</h3>
+                <p>View registered customers.</p>
+
+                <button onclick="location.href='admin-users.html'">
+                    Manage Users
+                </button>
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <script>
+
+        // Check Admin Login
+        const adminToken =
+            localStorage.getItem("shopSphereAdminToken");
+
+        if (!adminToken) {
+            window.location.href = "admin-login.html";
+        }
+
+
+        // Load Dashboard Data
+        async function loadDashboard() {
+
+            try {
+
+                // Products
+                const productsResponse =
+                    await fetch("http://localhost:5000/api/products");
+
+                const products =
+                    await productsResponse.json();
+
+                document.getElementById("totalProducts").innerText =
+                    products.length;
+
+
+
+                    // Users
+const usersResponse =
+    await fetch("http://localhost:5000/api/users/all");
+
+if (usersResponse.ok) {
+
+    const users =
+        await usersResponse.json();
+
+    document.getElementById("totalUsers").innerText =
+        users.length;
+}
+
+
+                // Orders
+                const ordersResponse =
+                    await fetch(
+                        "http://localhost:5000/api/orders/all"
+                    );
+
+                if (ordersResponse.ok) {
+
+                    const orders =
+                        await ordersResponse.json();
+
+                    document.getElementById("totalOrders").innerText =
+                        orders.length;
+
+                    let totalSales = 0;
+
+                    orders.forEach(function (order) {
+
+                        totalSales +=
+                            Number(order.price || 0) *
+                            Number(order.quantity || 1);
+
+                    });
+
+                    document.getElementById("totalSales").innerText =
+                        "₹" + totalSales.toLocaleString("en-IN");
+
+                }
+
+            } catch (error) {
+
+                console.log(
+                    "Dashboard error:",
+                    error
+                );
+
+            }
+
+        }
+
+
+        // Admin Logout
+        document.getElementById("adminLogout")
+            .addEventListener("click", function () {
+
+                localStorage.removeItem(
+                    "shopSphereAdminToken"
+                );
+
+                localStorage.removeItem(
+                    "shopSphereAdmin"
+                );
+
+                window.location.href =
+                    "admin-login.html";
+
+            });
+
+
+        loadDashboard();
+
+    </script>
+
+</body>
+
+</html>

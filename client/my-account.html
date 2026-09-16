@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>My Account | ShopSphere</title>
+
+<link rel="stylesheet" href="style.css">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+</head>
+
+<body>
+
+<!-- Header -->
+
+<header>
+
+<div class="logo">
+<h2>🛍️ ShopSphere</h2>
+</div>
+
+<div class="search-box">
+<input type="text" id="searchInput" placeholder="Search Products...">
+<button><i class="fa fa-search"></i></button>
+</div>
+
+<nav>
+
+<ul>
+
+<li><a href="index.html">Home</a></li>
+
+<li><a href="categories.html">Categories</a></li>
+
+<li><a href="products.html">Products</a></li>
+
+<li><a href="cart.html">🛒 Cart</a></li>
+
+<li><a href="wishlist.html">❤️ Wishlist</a></li>
+
+</ul>
+
+</nav>
+
+</header>
+
+<!-- My Account -->
+
+<section class="account-section">
+
+<div class="account-container">
+
+<!-- Left Profile -->
+
+<div class="profile-card">
+
+<img src="images/profile.png" alt="Profile">
+
+<h2 id="accountName">User</h2>
+
+<p>📧 <span id="accountEmail">user@gmail.com</span></p>
+
+<p>📱 <span id="accountPhone">+91 9876543210</span></p>
+
+<p>📍 <span id="accountAddress">Pune, Maharashtra</span></p>
+
+<button id="editProfileBtn" class="edit-profile-btn">
+✏️ Edit Profile
+</button>
+
+</div>
+
+<!-- Right Side -->
+
+<div class="account-details">
+
+<h2>👤 My Account</h2>
+
+<p>
+Welcome to your ShopSphere Account.
+Manage your profile, orders, wishlist, cart, addresses and payments from here.
+</p>
+
+<!-- Account Menu -->
+
+<div class="account-menu">
+
+<a href="my-orders.html" class="account-box">
+<i class="fa-solid fa-box"></i>
+<h3>My Orders</h3>
+<p>View all your orders</p>
+</a>
+
+<a href="wishlist.html" class="account-box">
+<i class="fa-solid fa-heart"></i>
+<h3>Wishlist</h3>
+<p>Saved favourite products</p>
+</a>
+
+<a href="cart.html" class="account-box">
+<i class="fa-solid fa-cart-shopping"></i>
+<h3>My Cart</h3>
+<p>View cart items</p>
+</a>
+
+<a href="address.html" class="account-box">
+<i class="fa-solid fa-location-dot"></i>
+<h3>Saved Address</h3>
+<p>Manage delivery address</p>
+</a>
+
+<a href="payment.html" class="account-box">
+<i class="fa-solid fa-credit-card"></i>
+<h3>Payments</h3>
+<p>Payment methods</p>
+</a>
+
+<a href="contact.html" class="account-box">
+<i class="fa-solid fa-headset"></i>
+<h3>Help & Support</h3>
+<p>Contact customer care</p>
+</a>
+
+<a href="about.html" class="account-box">
+<i class="fa-solid fa-circle-info"></i>
+<h3>About ShopSphere</h3>
+<p>Know more about us</p>
+</a>
+
+<a href="login.html" class="account-box logout-box">
+<i class="fa-solid fa-right-from-bracket"></i>
+<h3>Logout</h3>
+<p>Sign out from account</p>
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- ================= Footer ================= -->
+
+<footer>
+
+    <h2>🛍️ ShopSphere</h2>
+
+    <p>Your One Stop Shopping Destination.</p>
+
+    <p>Email: shopsphere@gmail.com</p>
+
+    <p>Phone: +91 9898555789</p>
+
+    <p>© 2026 ShopSphere. All Rights Reserved.</p>
+
+    <p>
+        <a href="about.html">About</a> |
+        <a href="contact.html">Contact</a> |
+        <a href="refund-policy.html">Refund Policy</a> |
+        <a href="replace-return.html">Return Policy</a>
+    </p>
+
+    <p>
+        <a href="#">Facebook</a> |
+        <a href="#">Instagram</a> |
+        <a href="#">Twitter</a> |
+        <a href="#">YouTube</a>
+    </p>
+
+</footer>
+
+<script src="script.js"></script>
+
+<script>
+document.getElementById("editProfileBtn").addEventListener("click", function () {
+    window.location.href = "edit-profile.html";
+});
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const userData = localStorage.getItem("shopSphereUser");
+
+    if (userData) {
+
+        const user = JSON.parse(userData);
+
+        document.getElementById("accountName").innerText =
+            user.name || "User";
+
+        document.getElementById("accountEmail").innerText =
+            user.email || "user@gmail.com";
+
+        document.getElementById("accountPhone").innerText =
+        user.phone || "+91 9876543210";
+
+        document.getElementById("accountAddress").innerText =
+        user.address || "Pune, Maharashtra";
+    }
+
+});
+</script>
+
+
+</body>
+</html>

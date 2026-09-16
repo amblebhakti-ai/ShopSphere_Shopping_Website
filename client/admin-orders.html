@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ShopSphere - Order Management</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+
+        body {
+            background: #f5f5f5;
+            margin: 0;
+        }
+
+        .admin-header {
+            background: #2874f0;
+            color: white;
+            padding: 18px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .admin-header h1 {
+            margin: 0;
+        }
+
+        .back-btn {
+            background: white;
+            color: #2874f0;
+            border: none;
+            padding: 9px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .admin-container {
+            max-width: 1250px;
+            margin: auto;
+            padding: 30px;
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .top-bar input {
+            padding: 12px;
+            width: 300px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .orders-table {
+            width: 100%;
+            background: white;
+            border-collapse: collapse;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .orders-table th,
+        .orders-table td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+
+        .orders-table th {
+            background: #2874f0;
+            color: white;
+        }
+
+        .product-img {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+        }
+
+        .status-select {
+            padding: 7px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .empty-message {
+            text-align: center;
+            padding: 30px;
+            background: white;
+        }
+
+        .order-id {
+            font-size: 12px;
+            color: #777;
+        }
+
+        @media (max-width: 900px) {
+
+            .top-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .top-bar input {
+                width: auto;
+            }
+
+            .orders-table {
+                display: block;
+                overflow-x: auto;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header class="admin-header">
+
+    <h1>🛍️ ShopSphere Admin</h1>
+
+    <button
+        class="back-btn"
+        onclick="location.href='admin-dashboard.html'"
+    >
+        ← Dashboard
+    </button>
+
+</header>
+
+
+<main class="admin-container">
+
+
+    <div class="top-bar">
+
+        <h2>📦 Order Management</h2>
+
+        <input
+            type="text"
+            id="searchOrder"
+            placeholder="Search orders..."
+        >
+
+    </div>
+
+
+    <table class="orders-table">
+
+        <thead>
+
+            <tr>
+
+                <th>Product</th>
+
+                <th>Customer</th>
+
+                <th>Price</th>
+
+                <th>Quantity</th>
+
+                <th>Total</th>
+
+                <th>Date</th>
+
+                <th>Status</th>
+
+            </tr>
+
+        </thead>
+
+
+        <tbody id="orderTableBody"></tbody>
+
+    </table>
+
+
+</main>
+
+
+<script>
+
+
+/* ================= ADMIN LOGIN CHECK ================= */
+
+const adminToken =
+    localStorage.getItem("shopSphereAdminToken");
+
+
+if (!adminToken) {
+
+    window.location.href =
+        "admin-login.html";
+
+}
+
+
+/* ================= DATA ================= */
+
+let allOrders = [];
+
+
+/* ================= LOAD ORDERS ================= */
+
+async function loadOrders() {
+
+    try {
+
+        const response =
+            await fetch(
+                "http://localhost:5000/api/orders/all"
+            );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Failed to load orders"
+            );
+
+        }
+
+
+        allOrders =
+            await response.json();
+
+
+        displayOrders(allOrders);
+
+
+    }
+
+    catch (error) {
+
+        console.log(
+            "Order loading error:",
+            error
+        );
+
+
+        document.getElementById(
+            "orderTableBody"
+        ).innerHTML = `
+
+            <tr>
+
+                <td
+                    colspan="7"
+                    class="empty-message"
+                >
+                    Failed to load orders ❌
+                </td>
+
+            </tr>
+
+        `;
+
+    }
+
+}
+
+
+/* ================= DISPLAY ORDERS ================= */
+
+function displayOrders(orders) {
+
+    const tableBody =
+        document.getElementById(
+            "orderTableBody"
+        );
+
+
+    tableBody.innerHTML = "";
+
+
+    if (orders.length === 0) {
+
+        tableBody.innerHTML = `
+
+            <tr>
+
+                <td
+                    colspan="7"
+                    class="empty-message"
+                >
+                    No orders found 📦
+                </td>
+
+            </tr>
+
+        `;
+
+        return;
+
+    }
+
+
+    orders.forEach(function(order) {
+
+        const row =
+            document.createElement("tr");
+
+
+        const total =
+            Number(order.price) *
+            Number(order.quantity || 1);
+
+
+        const orderDate =
+            order.createdAt
+                ? new Date(order.createdAt)
+                    .toLocaleDateString("en-IN")
+                : "-";
+
+
+        row.innerHTML = `
+
+            <td>
+
+                <img
+                    src="${order.image}"
+                    class="product-img"
+                    alt="${order.productName}"
+                >
+
+                <br>
+
+                <strong>
+                    ${order.productName}
+                </strong>
+
+                <div class="order-id">
+                    ID: ${order._id}
+                </div>
+
+            </td>
+
+
+            <td>
+
+                ${order.userId || "Customer"}
+
+            </td>
+
+
+            <td>
+
+                ₹${Number(order.price)
+                    .toLocaleString("en-IN")}
+
+            </td>
+
+
+            <td>
+
+                ${order.quantity || 1}
+
+            </td>
+
+
+            <td>
+
+                ₹${total
+                    .toLocaleString("en-IN")}
+
+            </td>
+
+
+            <td>
+
+                ${orderDate}
+
+            </td>
+
+
+            <td>
+
+                <select
+                    class="status-select"
+                    onchange="updateOrderStatus(
+                        '${order._id}',
+                        this.value
+                    )"
+                >
+
+                    <option
+                        value="Ordered"
+                        ${order.status === "Ordered" ? "selected" : ""}
+                    >
+                        Ordered
+                    </option>
+
+                    <option
+                        value="Shipped"
+                        ${order.status === "Shipped" ? "selected" : ""}
+                    >
+                        Shipped
+                    </option>
+
+                    <option
+                        value="Delivered"
+                        ${order.status === "Delivered" ? "selected" : ""}
+                    >
+                        Delivered
+                    </option>
+
+                    <option
+                        value="Cancelled"
+                        ${order.status === "Cancelled" ? "selected" : ""}
+                    >
+                        Cancelled
+                    </option>
+
+                </select>
+
+            </td>
+
+        `;
+
+
+        tableBody.appendChild(row);
+
+    });
+
+}
+
+
+/* ================= SEARCH ================= */
+
+document
+    .getElementById("searchOrder")
+    .addEventListener(
+        "input",
+        function() {
+
+            const searchText =
+                this.value
+                    .toLowerCase();
+
+
+            const filteredOrders =
+                allOrders.filter(function(order) {
+
+                    return (
+
+                        (order.productName || "")
+                            .toLowerCase()
+                            .includes(searchText)
+
+                        ||
+
+                        (order.userId || "")
+                            .toLowerCase()
+                            .includes(searchText)
+
+                        ||
+
+                        (order._id || "")
+                            .toLowerCase()
+                            .includes(searchText)
+
+                    );
+
+                });
+
+
+            displayOrders(
+                filteredOrders
+            );
+
+        }
+    );
+
+
+/* ================= UPDATE STATUS ================= */
+
+async function updateOrderStatus(
+    orderId,
+    newStatus
+) {
+
+    try {
+
+        const response =
+            await fetch(
+                "http://localhost:5000/api/orders/" +
+                orderId,
+                {
+                    method: "PUT",
+
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+
+                    body: JSON.stringify({
+                        status: newStatus
+                    })
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (response.ok) {
+
+            alert(
+                "Order status updated successfully ✅"
+            );
+
+            loadOrders();
+
+        }
+
+        else {
+
+            alert(
+                data.message ||
+                "Failed to update order ❌"
+            );
+
+        }
+
+    }
+
+    catch (error) {
+
+        console.log(
+            "Status update error:",
+            error
+        );
+
+        alert(
+            "Server connection failed ❌"
+        );
+
+    }
+
+}
+
+
+/* ================= START ================= */
+
+loadOrders();
+
+</script>
+
+
+</body>
+
+</html>
