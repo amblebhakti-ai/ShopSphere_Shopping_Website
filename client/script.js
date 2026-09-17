@@ -1818,7 +1818,7 @@ document.addEventListener(
 
             const response =
                 await fetch(
-                    "http://localhost:5000/api/products"
+                    "https://shopsphere-shopping-website.onrender.com/api/products"
                 );
 
 
@@ -2526,7 +2526,7 @@ document.addEventListener("DOMContentLoaded", function () {
         try {
 
             const response = await fetch(
-                "http://localhost:5000/api/users/register",
+                "https://shopsphere-shopping-website.onrender.com/api/users/register",
                 {
                     method: "POST",
 
@@ -2591,7 +2591,7 @@ document.addEventListener("DOMContentLoaded", function () {
         try {
 
             const response = await fetch(
-                "http://localhost:5000/api/users/login",
+                "https://shopsphere-shopping-website.onrender.com/api/users/login",
                 {
                     method: "POST",
 
@@ -2738,7 +2738,7 @@ async function loadUserProfile() {
     try {
 
         const response = await fetch(
-            "http://localhost:5000/api/users/profile",
+            "https://shopsphere-shopping-website.onrender.com/api/users/profile",
             {
                 method: "GET",
 

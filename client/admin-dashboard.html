@@ -219,7 +219,7 @@
 
                 // Products
                 const productsResponse =
-                    await fetch("http://localhost:5000/api/products");
+                    await fetch("https://shopsphere-shopping-website.onrender.com/api/products");
 
                 const products =
                     await productsResponse.json();
@@ -231,7 +231,7 @@
 
                     // Users
 const usersResponse =
-    await fetch("http://localhost:5000/api/users/all");
+    await fetch("https://shopsphere-shopping-website.onrender.com/api/users/all");
 
 if (usersResponse.ok) {
 
@@ -246,7 +246,7 @@ if (usersResponse.ok) {
                 // Orders
                 const ordersResponse =
                     await fetch(
-                        "http://localhost:5000/api/orders/all"
+                        "https://shopsphere-shopping-website.onrender.com/api/orders/all"
                     );
 
                 if (ordersResponse.ok) {
